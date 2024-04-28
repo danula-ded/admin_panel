@@ -1,4 +1,4 @@
-const fetchGames = async url => {
+const fetchGames = async (url) => {
   try {
     const games = await fetch(url);
     return games.json();
@@ -14,7 +14,7 @@ const showPlaceholder = (selector, message) => {
   document.querySelector(selector).append(placeholder);
 };
 
-const removePlaceholder = selector => {
+const removePlaceholder = (selector) => {
   const placeholder = document.querySelector(selector);
   if (placeholder) {
     placeholder.remove();
@@ -44,12 +44,12 @@ const createListItem = (parent, item, template) => {
 
 const createGamesListItems = (listSelector, template, array) => {
   const ul = document.querySelector(listSelector);
-  array.forEach(item => {
+  array.forEach((item) => {
     createListItem(ul, item, template);
   });
 };
 
-fetchGames("/games").then(data => {
+fetchGames("/games").then((data) => {
   if (!data || !data.length) {
     showPlaceholder(".games-list", "Нет игр в базе данных. Добавьте игру.");
     return;
@@ -75,9 +75,9 @@ const sendForm = async (url, object) => {
     const resp = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(object)
+      body: JSON.stringify(object),
     });
     return resp;
   } catch (error) {
@@ -87,14 +87,14 @@ const sendForm = async (url, object) => {
 
 const submitForm = (() => {
   const form = document.querySelector(".game-form");
-  form.addEventListener("submit", async e => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const objectToSend = {
       title: data.get("title"),
       image: data.get("image"),
       link: data.get("link"),
-      description: data.get("description")
+      description: data.get("description"),
     };
     const resp = await sendForm("/games", objectToSend);
     if (resp.status !== 200) {
@@ -122,19 +122,19 @@ const deleteGame = async (url, id) => {
     const response = await fetch(`${url}/${id}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id })
+      body: JSON.stringify({ id }),
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-const submitDelete = async item => {
+const submitDelete = async (item) => {
   item
     .querySelector(".delete-game__button")
-    .addEventListener("click", async e => {
+    .addEventListener("click", async (e) => {
       const id = e.target.parentElement.id.split("-")[1];
       await deleteGame("/games", id);
       e.target.parentElement.remove();
